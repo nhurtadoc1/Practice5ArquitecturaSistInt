@@ -21,7 +21,7 @@ export type Travel = {
     money: number;
     distance: number;
     date: string;
-    status: Status;
+    status: string;
 };
 
 export enum Status {

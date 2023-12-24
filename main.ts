@@ -8,26 +8,30 @@ import { Travel } from "./resolvers/Travel.ts"
 import { typeDefs } from "./gql/schema.ts";
 import montoose from "mongoose";
 
-const MONGO_URL = Deno.env.get("MONGO_URL");
-if (!MONGO_URL) {
-  throw new Error("Please provide a MongoDB connection string");
+try {
+  const MONGO_URL = Deno.env.get("MONGO_URL");
+  if (!MONGO_URL) {
+    throw new Error("Please provide a MongoDB connection string");
+  }
+
+  // Connect to MongoDB
+  await montoose.connect(MONGO_URL);
+
+  console.info("🚀 Connected to MongoDB");
+
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers: {
+      Query,
+      Mutation,
+      Client,
+      Driver,
+      Travel,
+    },
+  });
+
+  const { url } = await startStandaloneServer(server);
+  console.info(`🚀 Server ready at ${url}`);
+} catch {
+  console.log("Error");
 }
-
-// Connect to MongoDB
-await montoose.connect(MONGO_URL);
-
-console.info("🚀 Connected to MongoDB");
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers: {
-    Query,
-    Mutation,
-    Client,
-    Driver,
-    Travel,
-  },
-});
-
-const { url } = await startStandaloneServer(server);
-console.info(`🚀 Server ready at ${url}`);

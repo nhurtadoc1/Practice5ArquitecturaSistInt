@@ -8,7 +8,7 @@ const TravelSchema = new Schema({
   money: { type: Number, unique: false, required: true, min: 5},
   distance: {type: Number, unique: false, required: true, min: 0.01},
   date: { type: Date, required: true, unique: false, min: '2023-12-20' },
-  status: { type: Status, unique: false, required: true },
+  status: { type: String, unique: false, required: true },
 });
 
 export type TravelModelType = mongoose.Document & Omit<Travel, "id" >;
